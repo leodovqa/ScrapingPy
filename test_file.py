@@ -1,6 +1,7 @@
-
 import json
 import re
+
+from test_to_test_file import getResultsF
 
 open('test_file_res.txt', 'w').close()
 
@@ -21,26 +22,9 @@ for x in json_data:
     separator = "."
     r = x['Price'].split(separator, 1)[0]
     result = re.sub(r'[^0-9]', '', r)
-    if int(result) < priceCheck:
-        title = ("Title: " + x['Title'])
-        price = ("Price: " + x["Price"])
-        link = ("Link: " + x["Link"])
-        image = ("Image: " + x["Image Source"])
-        results = title, price, link, image
-        f.write("--==IF TRUE==--")
-        f.write(str(results))
-        f.write("\n")
-    else:
+    getResultsF(result, priceCheck, x, f)
+    if int(result) > priceCheck:
         count += 1
-        title = ("Title: " + x['Title'])
-        price = ("Price: " + x["Price"])
-        link = ("Link: " + x["Link"])
-        image = ("Image: " + x["Image Source"])
-        results = title, price, link, image
-        f.write("--==IF FALSE==--")
-        f.write(str(results))
-        f.write("\n")
-
-print("Number of items > {0} are -{1}-".format(priceCheck, count))
+print("Number of items with higher cost from {0} are -{1}-".format(priceCheck, count))
 
 f.close()
